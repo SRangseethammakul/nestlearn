@@ -31,6 +31,15 @@ export class UsersService {
     return await this.usersRepository.find({ order: { id: 'desc' } });
   }
 
+  async findAllWithPagination(page = 1, pageSize = 10): Promise<User[]> {
+    const users = await this.usersRepository.find({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { id: 'asc' },
+    });
+    return users;
+  }
+
   async findOne(id: number): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
